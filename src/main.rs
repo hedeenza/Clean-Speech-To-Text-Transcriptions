@@ -18,7 +18,7 @@ struct Args {
     output: String,
 
     /// Number of sentences per paragraph
-    #[arg(short, long)]
+    #[arg(short, long, default_value_t = 5)]
     sentences_per_paragraph: u8,
 }
 
