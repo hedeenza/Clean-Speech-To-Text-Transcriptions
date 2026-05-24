@@ -103,8 +103,14 @@ fn create_paragraphs(spp: u8, output_file: String) {
         string_base.push(' ');
     }
 
+    // Replace all question marks with Question Marks + New Lines
+    let question_lines = string_base.replace("? ", "?\n");
+    
+    // Replace all exclamation points with Exclamation Point + New Lines
+    let exclamation_lines = question_lines.replace("! ", "!\n");
+
     // Replace all periods with Periods + New Lines
-    let sentence_lines = string_base.replace(". ", ".\n");
+    let sentence_lines = exclamation_lines.replace(". ", ".\n");
 
     // Write to Temporary File 2
     let temporary_path2 = Path::new("temporary_file2.txt");
