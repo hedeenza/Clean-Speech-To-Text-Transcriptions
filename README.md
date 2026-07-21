@@ -11,9 +11,10 @@
 ## Running the CLI
 `$ ./clean_stt_transcription -i <INPUT> -o <OUTPUT> -s <NUMBER>`
 
-- Input file (-i / --input): The speech-to-text transcript to clean.
-- Output file (-o / --output): The name of the clean output file.
-- Number of sentences per paragraph (-s / --sentences-per-paragraph): The desired number of sentences in each paragraph (default 5).
+- `-i / --input`: Input file - The speech-to-text transcript to clean.
+- `-o / --output`: Output file - The name of the clean output file.
+- `-s / --sentences-per-paragraph`: Number of sentences per paragraph - The desired number of sentences in each paragraph (default 5).
+
 - Ensure the program has executable permissions.
 
 ## Building from Source
@@ -33,5 +34,3 @@ export PATH="$PATH:/home/path/to/directory/where/this/program/lives"
 alias cstt="clean_stt_transcription"
 ```
 
-## License
-This program is distributed under the terms of a GNU GPLv3 license. See LICENSE.md for details.
