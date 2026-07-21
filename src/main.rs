@@ -1,3 +1,4 @@
+#![warn(clippy::pedantic)]
 use clap::Parser;
 use regex::Regex;
 use std::fs::File;
@@ -74,16 +75,16 @@ where
         // Match the line to a Regex pattern, process appropriately, and write to Temporary File 1
         if start_detect.is_match(&line) {
             let cleaned_detect = start_detect.replace_all(&line, "");
-            let _ = writeln!(temporary_file1, "{}", cleaned_detect);
+            let _ = writeln!(temporary_file1, "{cleaned_detect}");
         } else if start_transcription.is_match(&line) {
             let cleaned_transcription = start_transcription.replace_all(&line, "");
-            let _ = writeln!(temporary_file1, "{}", cleaned_transcription);
+            let _ = writeln!(temporary_file1, "{cleaned_transcription}");
         } else if start_chapter.is_match(&line) {
             let cleaned_chapter = start_chapter.replace_all(&line, "");
-            let _ = writeln!(temporary_file1, "{}", cleaned_chapter);
+            let _ = writeln!(temporary_file1, "{cleaned_chapter}");
         } else if start_bracket.is_match(&line) {
             let cleaned_bracket = start_bracket.replace_all(&line, "");
-            let _ = writeln!(temporary_file1, "{}", cleaned_bracket);
+            let _ = writeln!(temporary_file1, "{cleaned_bracket}");
         } else {
             {}
         }
@@ -96,7 +97,7 @@ fn create_paragraphs(spp: u8, output_file: String) {
     let temporary_reader1 = BufReader::new(temporary_file1);
 
     // Trim input lines and push each line to the master string
-    let mut string_base = "".to_string();
+    let mut string_base = String::new();
     for line in temporary_reader1.lines() {
         let trimmed_line = line.unwrap();
         string_base.push_str(trimmed_line.trim());
@@ -105,7 +106,7 @@ fn create_paragraphs(spp: u8, output_file: String) {
 
     // Replace all question marks with Question Marks + New Lines
     let question_lines = string_base.replace("? ", "?\n");
-    
+
     // Replace all exclamation points with Exclamation Point + New Lines
     let exclamation_lines = question_lines.replace("! ", "!\n");
 
@@ -116,7 +117,7 @@ fn create_paragraphs(spp: u8, output_file: String) {
     let temporary_path2 = Path::new("temporary_file2.txt");
     let mut temporary_file2 =
         File::create(temporary_path2).expect("Failed to Create [ Temporary File ]");
-    let _ = writeln!(temporary_file2, "{}", sentence_lines);
+    let _ = writeln!(temporary_file2, "{sentence_lines}");
 
     // Read Temporary File 2
     let temporary_in = File::open("temporary_file2.txt").unwrap();
@@ -131,14 +132,13 @@ fn create_paragraphs(spp: u8, output_file: String) {
     // Group the vector into Paragraphs
     let paragraph_vector: Vec<Vec<String>> = line_vector
         .chunks(spp.into())
-        .map(|paragraph| paragraph.to_vec())
+        .map(<[std::string::String]>::to_vec)
         .collect();
 
     // Write to the Final Output
-    let mut final_output =
-        File::create(output_file).expect("Failed to Create [ Output File ]");
+    let mut final_output = File::create(output_file).expect("Failed to Create [ Output File ]");
     for paragraph in &paragraph_vector {
         let flattened_paragraph: String = paragraph.join(" ") + "\n";
-        let _ = writeln!(final_output, "{}", flattened_paragraph);
+        let _ = writeln!(final_output, "{flattened_paragraph}");
     }
 }
