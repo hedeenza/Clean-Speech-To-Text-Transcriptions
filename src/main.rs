@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
 use std::path::Path;
 use std::process::Command;
+use std::time::Instant;
 
 // Create a struct to hold the CLI arguments
 #[derive(Parser)]
@@ -24,6 +25,9 @@ struct Args {
 }
 
 fn main() {
+    // Start Benchmarking Timer
+    let program_start = Instant::now();
+
     // Parse the command line arguments
     let args = Args::parse();
 
@@ -55,6 +59,9 @@ fn main() {
         .arg("temporary_file1.txt")
         .arg("temporary_file2.txt")
         .spawn();
+
+    let program_time = program_start.elapsed();
+    println!("Transcription cleaned in {program_time:.2?}");
 }
 
 fn clean_notation<R>(input_reader: BufReader<R>, temporary_file1: &mut File)
